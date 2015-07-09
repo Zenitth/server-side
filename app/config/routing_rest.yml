@@ -1,0 +1,3 @@
+Rest_Api : 
+  type : rest
+  resource: "@zenitthApiBundle/Resources/config/routing.yml"

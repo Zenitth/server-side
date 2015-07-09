@@ -1,0 +1,4 @@
+api : 
+  type: rest
+  resource:     "zenitthApiBundle:Api"
+  name_prefix:  api_

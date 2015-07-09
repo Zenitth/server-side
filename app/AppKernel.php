@@ -19,6 +19,9 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new zenitth\UserBundle\ZenitthUserBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new zenitth\ApiBundle\zenitthApiBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
