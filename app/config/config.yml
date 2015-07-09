@@ -104,3 +104,15 @@ fos_rest:
     routing_loader:
         default_format: json
         include_format: false
+
+#Fos OAuth Server Bundle Config
+fos_oauth_server:
+    db_driver: orm
+    client_class:        zenitth\ApiBundle\Entity\Client
+    access_token_class:  zenitth\ApiBundle\Entity\AccessToken
+    refresh_token_class: zenitth\ApiBundle\Entity\RefreshToken
+    auth_code_class:     zenitth\ApiBundle\Entity\AuthCode
+    service:
+        user_provider: fos_user.user_provider.username
+        options:
+            supported_scopes: user

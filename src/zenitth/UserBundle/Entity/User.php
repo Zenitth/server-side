@@ -18,9 +18,30 @@ class User extends BaseUser
     */
    protected $id;
 
+   /**
+     * @ORM\Column(name="api_key", type="string", nullable=true)
+     */
+    protected $apiKey;
+
    public function __construct()
    {
        parent::__construct();
        // your own logic
    }
+
+   /**
+    * @param mixed $apiKey
+    */
+    public function setApiKey($apiKey)
+    {
+      $this->apiKey = $apiKey;
+    }
+
+    /**
+    * @return mixed
+    */
+    public function getApiKey()
+    {
+      return $this->apiKey;
+    }
 }

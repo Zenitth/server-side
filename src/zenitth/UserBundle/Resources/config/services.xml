@@ -4,13 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
-    <services>
-        <service id="zenitth_user.example" class="zenitth\UserBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+    <services>        
+        <service id="zenitth_user.repository.user"
+                 class="zenitth\Bundle\UserBundle\Entity\UserRepository"
+                 factory-method="getRepository"
+                 factory-service="doctrine.orm.entity_manager">
+            <argument>ZenitthUserBundle:User</argument>
         </service>
     </services>
-    -->
+    
 </container>
