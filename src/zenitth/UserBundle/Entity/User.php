@@ -23,6 +23,28 @@ class User extends BaseUser
      */
     protected $apiKey;
 
+   /**
+     * @var datetime
+     *
+     * @ORM\Column(name="age", type="datetime")
+     */
+    private $birthdate;
+
+   /**
+     * @var string
+     *
+     * @ORM\Column(name="sexe", type="string")
+     */
+    private $sexe;
+
+   /**
+     * @var integer
+     *
+     * @ORM\Column(name="score", type="integer")
+     */
+    private $score;
+
+
    public function __construct()
    {
        parent::__construct();
@@ -43,5 +65,84 @@ class User extends BaseUser
     public function getApiKey()
     {
       return $this->apiKey;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set birthdate
+     *
+     * @param \DateTime $birthdate
+     * @return User
+     */
+    public function setBirthdate($birthdate)
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    /**
+     * Get birthdate
+     *
+     * @return \DateTime 
+     */
+    public function getBirthdate()
+    {
+        return $this->birthdate;
+    }
+
+    /**
+     * Set sexe
+     *
+     * @param string $sexe
+     * @return User
+     */
+    public function setSexe($sexe)
+    {
+        $this->sexe = $sexe;
+
+        return $this;
+    }
+
+    /**
+     * Get sexe
+     *
+     * @return string 
+     */
+    public function getSexe()
+    {
+        return $this->sexe;
+    }
+
+    /**
+     * Set score
+     *
+     * @param integer $score
+     * @return User
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return integer 
+     */
+    public function getScore()
+    {
+        return $this->score;
     }
 }
