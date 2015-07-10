@@ -44,11 +44,22 @@ class User extends BaseUser
      */
     private $score;
 
+   /**
+     * @ORM\OneToOne(targetEntity="Zenitth\ApiBundle\Entity\brands", inversedBy="brandUser")
+     */
+    private $userBrand;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Zenitth\ApiBundle\Entity\questions")
+     */
+    private $questionUser;
+
 
    public function __construct()
    {
        parent::__construct();
        // your own logic
+       $this->questionUser = new ArrayCollection();
    }
 
    /**

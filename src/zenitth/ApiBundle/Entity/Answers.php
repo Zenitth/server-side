@@ -35,6 +35,15 @@ class Answers
      */
     private $isTrue;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Questions")
+     */
+    private $questions;
+
+    public function __construct() {
+        $this->questions = new ArrayCollection();
+    }
+
 
     /**
      * Get id

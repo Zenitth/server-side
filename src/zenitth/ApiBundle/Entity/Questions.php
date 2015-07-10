@@ -28,6 +28,26 @@ class Questions
      */
     private $question;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Answers")
+     */
+    private $answers;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="zenitth\UserBundle\Entity\User")
+     */
+    private $userQuestion;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Brands",inversedBy="brandQuestions")
+     */
+    private $brands;
+
+    public function __construct() {
+        $this->answers = new ArrayCollection();
+        $this->brands = new ArrayCollection();
+        $this->userQuestion = new ArrayCollection();
+    }
 
     /**
      * Get id

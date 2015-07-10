@@ -28,6 +28,20 @@ class brands
      */
     private $nom;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Questions",mappedBy="brands")
+     */
+    private $brandQuestions;
+
+    /**
+     * @ORM\OneToOne(targetEntity="zenitth\UserBundle\Entity\User", mappedBy="userBrand")
+     */
+    private $brandUser;
+
+    public function __construct() {
+        $this->brandQuestions = new ArrayCollection();
+    }
+
 
     /**
      * Get id
