@@ -45,12 +45,12 @@ class User extends BaseUser
     private $score;
 
    /**
-     * @ORM\OneToOne(targetEntity="Zenitth\ApiBundle\Entity\brands", inversedBy="brandUser")
+     * @ORM\OneToOne(targetEntity="zenitth\ApiBundle\Entity\brands", inversedBy="brandUser")
      */
     private $userBrand;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Zenitth\ApiBundle\Entity\questions")
+     * @ORM\ManyToMany(targetEntity="zenitth\ApiBundle\Entity\Questions")
      */
     private $questionUser;
 
