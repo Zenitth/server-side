@@ -26,7 +26,7 @@ class User extends BaseUser
    /**
      * @var datetime
      *
-     * @ORM\Column(name="age", type="datetime")
+     * @ORM\Column(name="birthdate", type="datetime")
      */
     private $birthdate;
 
@@ -40,7 +40,7 @@ class User extends BaseUser
    /**
      * @var integer
      *
-     * @ORM\Column(name="score", type="integer")
+     * @ORM\Column(name="score", type="integer", nullable=true)
      */
     private $score;
 
