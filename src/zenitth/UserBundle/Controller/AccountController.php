@@ -17,7 +17,7 @@ class AccountController extends Controller
      *
      * @RequestParam(name="username", requirements="[a-zA-Z1-9\ \-_\/]+", nullable=false, strict=true, description="Username")
      * @RequestParam(name="email", nullable=false, strict=true, description="Email")
-     * @RequestParam(name="password", requirements="[a-zA-Z1-9\-_\/]+", nullable=false, strict=true, description="password")
+     * @RequestParam(name="password", nullable=false, strict=true, description="password")
      * @RequestParam(name="birthday", nullable=false, strict=true, description="Birthday")
      * @RequestParam(name="sex", nullable=false, strict=true, description="Sex")
      *
@@ -64,6 +64,47 @@ class AccountController extends Controller
 				'secretId'	=> $secret,
 				'key'		=> $key
 			);
-	}        
+	}   
+
+
+	/**
+     *
+     * @param ParamFetcher $paramFetcher Paramfetcher
+     *
+     * @RequestParam(name="email", nullable=false, strict=true, description="Email")
+     * @RequestParam(name="password", nullable=false, strict=true, description="password")
+     *
+     */
+	public function postLoginAction(ParamFetcher $paramFetcher)
+	{
+		$email = $paramFetcher->get('email');
+		$password = $paramFetcher->get('password');
+
+		$userManager = $this->get('fos_user.user_manager');
+		$user = $userManager->findUserByEmail($email);
+		$factory = $this->get('security.encoder_factory');
+		$encoder = $factory->getEncoder($user);
+		$isAuthorize = ($encoder->isPasswordValid($user->getPassword(),$password,$user->getSalt())) ? true : false;
+
+		if ($isAuthorize) {
+			$em = $this->getDoctrine()->getEntityManager();
+	    	$client = $em->getRepository('zenitthApiBundle:Client')->findOneByUser($user->getId());
+
+	    	if ($client) {
+
+		    	$apiKey = $user->getApiKey();
+		    	$secretId = $client->getSecret();
+		    	$clientId = $client->getId() . "_" . $client->getRandomId();
+
+		    	return array(
+		    		'key' 		=> $apiKey,
+		    		'secretId' 	=> $secretId,
+		    		'clientId'	=> $clientId
+		    	);
+		    }
+		}
+
+		throw new HttpException(404, "User not found");
+	}     
 
 }
