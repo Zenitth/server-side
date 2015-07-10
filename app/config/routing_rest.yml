@@ -1,3 +1,9 @@
 Rest_Api : 
   type : rest
   resource: "@zenitthApiBundle/Resources/config/routing.yml"
+  prefix : /api
+
+Rest_Account : 
+  type : rest
+  resource: "@ZenitthUserBundle/Resources/config/routing.yml"
+  prefix : /account

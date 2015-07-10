@@ -1,0 +1,4 @@
+account : 
+  type: rest
+  resource:     "ZenitthUserBundle:Account"
+  name_prefix:  account_
