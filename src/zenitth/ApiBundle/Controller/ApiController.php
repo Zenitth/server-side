@@ -11,7 +11,10 @@ class ApiController extends Controller
 
 	public function getTestAction()
 	{
-		return array('id' => 1, 'name' => 'Arnaud');
+		$repo = $this->getDoctrine()->getRepository('zenitthApiBundle:brands')->find(1);
+		$questions = $repo->getBrandQuestions();
+
+		return $questions;
 	}
 
 	public function getQuizzAction()

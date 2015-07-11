@@ -4,11 +4,17 @@ namespace zenitth\ApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection; 
+
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+
 /**
  * brands
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="zenitth\ApiBundle\Entity\brandsRepository")
+ * 
+ * @ExclusionPolicy("all")
  */
 class brands
 {
@@ -18,6 +24,7 @@ class brands
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
      */
     private $id;
 
@@ -25,6 +32,7 @@ class brands
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=255)
+     * @Expose
      */
     private $nom;
 

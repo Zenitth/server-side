@@ -15,10 +15,11 @@ class AccountController extends Controller
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
-     * @RequestParam(name="username", requirements="[a-zA-Z1-9\ \-_\/]+", nullable=false, strict=true, description="Username")
+     * @RequestParam(name="username", nullable=false, strict=true, description="Username")
      * @RequestParam(name="email", nullable=false, strict=true, description="Email")
      * @RequestParam(name="password", nullable=false, strict=true, description="password")
      * @RequestParam(name="birthday", nullable=false, strict=true, description="Birthday")
+     * @RequestParam(name="brand", nullable=false, strict=true, description="Brand")
      * @RequestParam(name="sex", nullable=false, strict=true, description="Sex")
      *
      */
@@ -29,6 +30,9 @@ class AccountController extends Controller
 		$email = $paramFetcher->get('email');
 		$password = $paramFetcher->get('password');
 		$birthday = date_create_from_format('j/m/Y', $paramFetcher->get('birthday'));
+		$brand = $paramFetcher->get('brand');
+		$brand = $this->getDoctrine()->getRepository('zenitthApiBundle:brands')->find($brand);
+
 		$sex = $paramFetcher->get('sex');
 
 		$userManager = $this->get('fos_user.user_manager');
@@ -41,6 +45,7 @@ class AccountController extends Controller
         $user->setRoles(array('ROLE_APPLI'));
 
         $user->setBirthdate($birthday);
+        $user->setUserBrand($brand);
         $user->setSexe($sex);
 
 		$apiKey = sha1($user->getSalt() . $user->getId());
@@ -105,6 +110,20 @@ class AccountController extends Controller
 		}
 
 		throw new HttpException(404, "User not found");
-	}     
+	}
+
+
+	/**
+     *
+     * Get Brands list
+     *
+     */
+	public function getBrandsAction()
+	{ 
+		$repo = $this->getDoctrine()->getRepository('zenitthApiBundle:brands');
+		$brands = $repo->findAll();
+
+		return $brands;
+	}
 
 }
