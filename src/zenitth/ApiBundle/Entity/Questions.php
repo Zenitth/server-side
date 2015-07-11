@@ -82,4 +82,93 @@ class Questions
     {
         return $this->question;
     }
+
+    /**
+     * Add answers
+     *
+     * @param \zenitth\ApiBundle\Entity\Answers $answers
+     * @return Questions
+     */
+    public function addAnswer(\zenitth\ApiBundle\Entity\Answers $answers)
+    {
+        $this->answers[] = $answers;
+
+        return $this;
+    }
+
+    /**
+     * Remove answers
+     *
+     * @param \zenitth\ApiBundle\Entity\Answers $answers
+     */
+    public function removeAnswer(\zenitth\ApiBundle\Entity\Answers $answers)
+    {
+        $this->answers->removeElement($answers);
+    }
+
+    /**
+     * Get answers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * Add userQuestion
+     *
+     * @param \zenitth\UserBundle\Entity\User $userQuestion
+     * @return Questions
+     */
+    public function addUserQuestion(\zenitth\UserBundle\Entity\User $userQuestion)
+    {
+        $this->userQuestion[] = $userQuestion;
+
+        return $this;
+    }
+
+    /**
+     * Remove userQuestion
+     *
+     * @param \zenitth\UserBundle\Entity\User $userQuestion
+     */
+    public function removeUserQuestion(\zenitth\UserBundle\Entity\User $userQuestion)
+    {
+        $this->userQuestion->removeElement($userQuestion);
+    }
+
+    /**
+     * Get userQuestion
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserQuestion()
+    {
+        return $this->userQuestion;
+    }
+
+    /**
+     * Set brands
+     *
+     * @param \zenitth\ApiBundle\Entity\Brands $brands
+     * @return Questions
+     */
+    public function setBrands(\zenitth\ApiBundle\Entity\Brands $brands = null)
+    {
+        $this->brands = $brands;
+
+        return $this;
+    }
+
+    /**
+     * Get brands
+     *
+     * @return \zenitth\ApiBundle\Entity\Brands 
+     */
+    public function getBrands()
+    {
+        return $this->brands;
+    }
 }
