@@ -6,6 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcher;
+
 class ApiController extends Controller
 {
 
@@ -20,7 +23,7 @@ class ApiController extends Controller
 	public function getQuizzAction()
 	{
 		$tabQuestions = [];
-		$user = $this->getDoctrine()->getRepository("ZenitthUserBundle:User")->find(1);
+		$user = $this->container->get('security.context')->getToken()->getUser();
 		$brand = $user->getUserBrand();
 		$questions = $brand->getBrandQuestions();
 		
@@ -37,5 +40,26 @@ class ApiController extends Controller
 			array_push($tabQuestions,$questions[$id]);
 		}
 		return $tabQuestions;
+	}
+
+
+	/**
+     * Update user Score
+     *
+     * @param ParamFetcher $paramFetcher Paramfetcher
+     *
+     * @RequestParam(name="score", requirements="\d+", nullable=false, strict=true, description="Username")
+     *
+     */
+	public function postScoreAction(ParamFetcher $paramFetcher)
+	{
+		$userManager = $this->get('fos_user.user_manager');
+		$score = $paramFetcher->get('score');
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		$score = $user->getScore() + $score;
+		$user->setScore($score);
+		$userManager->updateUser($user);
+
+		return true;
 	}
 }
