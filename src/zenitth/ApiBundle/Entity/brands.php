@@ -46,8 +46,14 @@ class brands
      */
     private $brandUser;
 
+    /**
+     * @ORM\OneToOne(targetEntity="brands")
+     */
+    private $enemy;
+
     public function __construct() {
         $this->brandQuestions = new ArrayCollection();
+        $this->brandUser = new ArrayCollection();
     }
 
 
@@ -148,5 +154,28 @@ class brands
     public function getBrandUser()
     {
         return $this->brandUser;
+    }
+
+    /**
+     * Set enemy
+     *
+     * @param \zenitth\ApiBundle\Entity\brands $enemy
+     * @return brands
+     */
+    public function setEnemy(\zenitth\ApiBundle\Entity\brands $enemy = null)
+    {
+        $this->enemy = $enemy;
+
+        return $this;
+    }
+
+    /**
+     * Get enemy
+     *
+     * @return \zenitth\ApiBundle\Entity\brands 
+     */
+    public function getEnemy()
+    {
+        return $this->enemy;
     }
 }

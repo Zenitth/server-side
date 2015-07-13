@@ -46,8 +46,14 @@ class brands
      */
     private $brandUser;
 
+    /**
+     * @ORM\OneToOne(targetEntity="brands")
+     */
+    private $enemy;
+
     public function __construct() {
         $this->brandQuestions = new ArrayCollection();
+        $this->brandUser = new ArrayCollection();
     }
 
 
@@ -115,5 +121,38 @@ class brands
     public function getBrandQuestions()
     {
         return $this->brandQuestions;
+    }
+
+    /**
+     * Add brandUser
+     *
+     * @param \zenitth\UserBundle\Entity\User $brandUser
+     * @return brands
+     */
+    public function addBrandUser(\zenitth\UserBundle\Entity\User $brandUser)
+    {
+        $this->brandUser[] = $brandUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove brandUser
+     *
+     * @param \zenitth\UserBundle\Entity\User $brandUser
+     */
+    public function removeBrandUser(\zenitth\UserBundle\Entity\User $brandUser)
+    {
+        $this->brandUser->removeElement($brandUser);
+    }
+
+    /**
+     * Get brandUser
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBrandUser()
+    {
+        return $this->brandUser;
     }
 }
