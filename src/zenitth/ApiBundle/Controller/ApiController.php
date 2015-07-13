@@ -69,14 +69,17 @@ class ApiController extends Controller
 	public function getDashboardAction()
 	{
 		$user = $this->container->get('security.context')->getToken()->getUser();
+		$db = $this->getDoctrine();
 		$score = $user->getScore();
 		$userBrand = $user->getUserBrand();
 		$fans = count($userBrand->getBrandUser());
+		$notifications = $db->getRepository('zenitthApiBundle:Notification')->getMine($user->getId());
 
 		$response = array(
-						'me' 	=> $user,
-						'score' => $score,
-						'fan'	=> $fans
+						'me' 			=> $user,
+						'score' 		=> $score,
+						'fan'			=> $fans,
+						'notifications' => $notifications
 					);
 
 		return $response;

@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class NotificationRepository extends EntityRepository
 {
+
+	public function getMine($userId) {
+		$qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->add('select', 'n')
+            ->add('from', 'zenitthApiBundle:Notification n')
+            ->where('n.userTo = :id')
+            ->andwhere('n.isRead = false')
+       		->setParameter('id', $userId)
+        ;
+
+        return $qb->getQuery()->getResult();
+	}
+
 }
