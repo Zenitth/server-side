@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
+use zenitth\ApiBundle\Entity\Defi;
+use zenitth\ApiBundle\Entity\Notification;
 
 class ApiController extends Controller
 {
@@ -78,5 +80,78 @@ class ApiController extends Controller
 					);
 
 		return $response;
+	}
+
+
+	/**
+	 * Get 4 question to defi an other user
+	 *
+	 */
+	public function getDefiQuestionAction()
+	{
+		$userFrom = $this->container->get('security.context')->getToken()->getUser();
+		$ennemyBrand = $userFrom->getUserBrand()->getEnemy();
+		$questions = $ennemyBrand->getBrandQuestions();
+		$users = $ennemyBrand->getBrandUser();
+		$rand = rand(0, (count($users) - 1));
+		$userTo = $users[$rand];
+
+		$arrayId= array();
+		for($i=0;$i<4;$i++){
+			$randQuestion=rand(0,count($questions));
+
+			if (!in_array($randQuestion, $arrayId )) {
+				array_push($arrayId, $randQuestion);
+			}
+		}
+
+		$tabQuestions = [];
+		foreach ($arrayId as $id => $question) {
+			array_push($tabQuestions,$questions[$id]);
+		}
+
+		return array('userTo' => $userTo, 'questions' => $tabQuestions);
+
+	}
+
+	/**
+     * Create defi from user to user
+     *
+     * @param ParamFetcher $paramFetcher Paramfetcher
+     *
+     * @RequestParam(name="userTo", requirements="\d+", nullable=false, strict=true, description="User To")
+     * @RequestParam(name="question", requirements="\d+", nullable=false, strict=true, description="Question")
+     *
+     */
+	public function postDefiValidateAction(ParamFetcher $paramFetcher)
+	{
+		$userFrom = $this->container->get('security.context')->getToken()->getUser();
+		$userRepo = $this->getDoctrine()->getRepository('ZenitthUserBundle:User');
+		$questionRepo = $this->getDoctrine()->getRepository('zenitthApiBundle:Questions');
+		
+		$questionTo = $paramFetcher->get('question');
+		$questionTo = $questionRepo->find($questionTo);
+		$userTo = $paramFetcher->get('userTo');
+		$userTo = $userRepo->find($userTo);
+
+		$defi = new Defi();
+		$defi->setUserFrom($userFrom);
+		$defi->setUserTo($userTo);
+		$defi->setQuestion($questionTo);
+
+
+		$notification = new Notification();
+		$notification->setUserFrom($userFrom);
+		$notification->setUserTo($userTo);
+		$text = "Un fan de " . $userFrom->getUserBrand()->getNom() . " veut vous défier : ";
+		$notification->setDefi($defi);
+		$notification->setText($text);
+
+		$em = $this->getDoctrine()->getEntityManager();
+		$em->persist($notification);
+		$em->persist($defi);
+    	$em->flush();
+
+		return true;
 	}
 }
