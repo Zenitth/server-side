@@ -72,6 +72,7 @@ class ApiController extends Controller
 		$fans = count($userBrand->getBrandUser());
 
 		$response = array(
+						'me' 	=> $user,
 						'score' => $score,
 						'fan'	=> $fans
 					);
