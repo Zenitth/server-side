@@ -41,6 +41,11 @@ class Answers
      */
     private $questions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Quots",mappedBy="quotAnswer")
+     */
+    private $answerQuot;
+
     public function __construct() {
         $this->questions = new ArrayCollection();
     }
@@ -133,5 +138,38 @@ class Answers
     public function getQuestions()
     {
         return $this->questions;
+    }
+
+    /**
+     * Add answerQuot
+     *
+     * @param \zenitth\ApiBundle\Entity\Quots $answerQuot
+     * @return Answers
+     */
+    public function addAnswerQuot(\zenitth\ApiBundle\Entity\Quots $answerQuot)
+    {
+        $this->answerQuot[] = $answerQuot;
+
+        return $this;
+    }
+
+    /**
+     * Remove answerQuot
+     *
+     * @param \zenitth\ApiBundle\Entity\Quots $answerQuot
+     */
+    public function removeAnswerQuot(\zenitth\ApiBundle\Entity\Quots $answerQuot)
+    {
+        $this->answerQuot->removeElement($answerQuot);
+    }
+
+    /**
+     * Get answerQuot
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAnswerQuot()
+    {
+        return $this->answerQuot;
     }
 }
