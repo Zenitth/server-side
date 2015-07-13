@@ -42,7 +42,7 @@ class brands
     private $brandQuestions;
 
     /**
-     * @ORM\OneToOne(targetEntity="zenitth\UserBundle\Entity\User", mappedBy="userBrand")
+     * @ORM\OneToMany(targetEntity="zenitth\UserBundle\Entity\User", mappedBy="userBrand")
      */
     private $brandUser;
 
@@ -118,22 +118,32 @@ class brands
     }
 
     /**
-     * Set brandUser
+     * Add brandUser
      *
      * @param \zenitth\UserBundle\Entity\User $brandUser
      * @return brands
      */
-    public function setBrandUser(\zenitth\UserBundle\Entity\User $brandUser = null)
+    public function addBrandUser(\zenitth\UserBundle\Entity\User $brandUser)
     {
-        $this->brandUser = $brandUser;
+        $this->brandUser[] = $brandUser;
 
         return $this;
     }
 
     /**
+     * Remove brandUser
+     *
+     * @param \zenitth\UserBundle\Entity\User $brandUser
+     */
+    public function removeBrandUser(\zenitth\UserBundle\Entity\User $brandUser)
+    {
+        $this->brandUser->removeElement($brandUser);
+    }
+
+    /**
      * Get brandUser
      *
-     * @return \zenitth\UserBundle\Entity\User 
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getBrandUser()
     {

@@ -45,8 +45,9 @@ class User extends BaseUser
      */
     private $score;
 
+
    /**
-     * @ORM\OneToOne(targetEntity="zenitth\ApiBundle\Entity\brands", inversedBy="brandUser")
+     * @ORM\ManyToOne(targetEntity="zenitth\ApiBundle\Entity\brands", inversedBy="brandUser")
      */
     private $userBrand;
 
@@ -212,5 +213,28 @@ class User extends BaseUser
     public function getQuestionUser()
     {
         return $this->questionUser;
+    }
+
+    /**
+     * Add userBrand
+     *
+     * @param \zenitth\ApiBundle\Entity\brands $userBrand
+     * @return User
+     */
+    public function addUserBrand(\zenitth\ApiBundle\Entity\brands $userBrand)
+    {
+        $this->userBrand[] = $userBrand;
+
+        return $this;
+    }
+
+    /**
+     * Remove userBrand
+     *
+     * @param \zenitth\ApiBundle\Entity\brands $userBrand
+     */
+    public function removeUserBrand(\zenitth\ApiBundle\Entity\brands $userBrand)
+    {
+        $this->userBrand->removeElement($userBrand);
     }
 }

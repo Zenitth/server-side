@@ -12,14 +12,10 @@ use FOS\RestBundle\Request\ParamFetcher;
 class ApiController extends Controller
 {
 
-	public function getTestAction()
-	{
-		$repo = $this->getDoctrine()->getRepository('zenitthApiBundle:brands')->find(1);
-		$questions = $repo->getBrandQuestions();
-
-		return $questions;
-	}
-
+	/**
+	 * Get pack of 10 ramdons questions
+	 *
+	 */
 	public function getQuizzAction()
 	{
 		$tabQuestions = [];
@@ -61,5 +57,25 @@ class ApiController extends Controller
 		$userManager->updateUser($user);
 
 		return true;
+	}
+
+
+	/**
+	 * Get all informations to make view dashboard
+	 *
+	 */
+	public function getDashboardAction()
+	{
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		$score = $user->getScore();
+		$userBrand = $user->getUserBrand();
+		$fans = count($userBrand->getBrandUser());
+
+		$response = array(
+						'score' => $score,
+						'fan'	=> $fans
+					);
+
+		return $response;
 	}
 }
