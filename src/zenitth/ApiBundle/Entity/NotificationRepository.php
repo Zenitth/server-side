@@ -19,6 +19,7 @@ class NotificationRepository extends EntityRepository
             ->add('from', 'zenitthApiBundle:Notification n')
             ->where('n.userTo = :id')
             ->andwhere('n.isRead = false')
+            ->orderBy('n.createdAt', 'DESC')
        		->setParameter('id', $userId)
         ;
 

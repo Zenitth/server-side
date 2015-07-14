@@ -85,6 +85,19 @@ class ApiController extends Controller
 		return $response;
 	}
 
+	/**
+	 * Get unread user's notifications
+	 *
+	 */
+	public function getNotificationsAction()
+	{
+		$user = $this->container->get('security.context')->getToken()->getUser();
+		$db = $this->getDoctrine();
+		$notifications = $db->getRepository('zenitthApiBundle:Notification')->getMine($user->getId());
+
+		return $notifications;
+	}
+
 
 	/**
 	 * Get 4 question to defi an other user
@@ -146,7 +159,7 @@ class ApiController extends Controller
 		$notification = new Notification();
 		$notification->setUserFrom($userFrom);
 		$notification->setUserTo($userTo);
-		$text = "Un fan de " . $userFrom->getUserBrand()->getNom() . " veut vous défier : ";
+		$text = "vous défie";
 		$notification->setDefi($defi);
 		$notification->setText($text);
 
