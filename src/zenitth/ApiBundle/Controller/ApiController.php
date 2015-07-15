@@ -10,6 +10,7 @@ use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Request\ParamFetcher;
 use zenitth\ApiBundle\Entity\Defi;
 use zenitth\ApiBundle\Entity\Notification;
+use Zenitth\UserBundle\Entity\User;
 
 class ApiController extends Controller
 {
@@ -74,12 +75,25 @@ class ApiController extends Controller
 		$userBrand = $user->getUserBrand();
 		$fans = count($userBrand->getBrandUser());
 		$notifications = $db->getRepository('zenitthApiBundle:Notification')->getMine($user->getId());
+		$scoreUsers = $db->getRepository('ZenitthUserBundle:User')->findByScore($userBrand->getId());
+		$countScore=count($scoreUsers);
+		$equality = false;
+
+		for ($i=0; $i < $countScore ; $i++) { 
+			if ($scoreUsers[$i]->getScore() === $score) {
+				if( $equality!= $scoreUsers[$i]->getScore() ){
+      				$equality =$scoreUsers[$i]->getScore();
+					$userRank = $i+1;
+				}
+			}
+		}
 
 		$response = array(
 						'me' 			=> $user,
 						'score' 		=> $score,
 						'fan'			=> $fans,
-						'notifications' => $notifications
+						'notifications' => $notifications,
+						'userRank'		=> $userRank
 					);
 
 		return $response;

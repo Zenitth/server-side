@@ -44,6 +44,11 @@ class Questions
      */
     private $brands;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Categories",inversedBy="categoryQuestion")
+     */
+    private $questionCategory;
+
     public function __construct() {
         $this->answers = new ArrayCollection();
         $this->brands = new ArrayCollection();
@@ -170,5 +175,28 @@ class Questions
     public function getBrands()
     {
         return $this->brands;
+    }
+
+    /**
+     * Set questionCategory
+     *
+     * @param \zenitth\ApiBundle\Entity\Categories $questionCategory
+     * @return Questions
+     */
+    public function setQuestionCategory(\zenitth\ApiBundle\Entity\Categories $questionCategory = null)
+    {
+        $this->questionCategory = $questionCategory;
+
+        return $this;
+    }
+
+    /**
+     * Get questionCategory
+     *
+     * @return \zenitth\ApiBundle\Entity\Categories 
+     */
+    public function getQuestionCategory()
+    {
+        return $this->questionCategory;
     }
 }

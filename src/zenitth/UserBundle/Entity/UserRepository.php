@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+	function findByScore($brandId){
+		$qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->add('select', 's')
+           ->add('from', 'ZenitthUserBundle:User s')
+           ->where('s.userBrand = :brandId')
+           ->orderBy('s.score', 'DESC')
+       		->setParameter('brandId',$brandId)
+        ;
+
+        return $qb->getQuery()->getResult();
+	}
+
 }
