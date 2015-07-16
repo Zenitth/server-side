@@ -21,7 +21,7 @@ class ApiController extends Controller
 	 */
 	public function getQuizzAction()
 	{
-		$tabQuestions = [];
+		$tabQuestions = array('questions' => array(), 'user' => array());
 		$user = $this->container->get('security.context')->getToken()->getUser();
 		$brand = $user->getUserBrand();
 		$questions = $brand->getBrandQuestions();
@@ -36,8 +36,10 @@ class ApiController extends Controller
 		}
 
 		foreach ($arrayId as $id => $question) {
-			array_push($tabQuestions,$questions[$id]);
+			array_push($tabQuestions['questions'],$questions[$id]);
 		}
+		array_push($tabQuestions['user'],$user);
+
 		return $tabQuestions;
 	}
 
