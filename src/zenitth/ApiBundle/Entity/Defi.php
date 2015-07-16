@@ -33,7 +33,7 @@ class Defi
     private $userFrom;
 
     /**
-     * @ORM\ManyToOne(targetEntity="zenitth\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="zenitth\UserBundle\Entity\User", inversedBy="defi")
      */
     private $userTo;
 
@@ -54,6 +54,13 @@ class Defi
      * @ORM\Column(name="is_answer", type="boolean", nullable=true)
      */
     private $isAnswered;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pts", type="integer", nullable=true)
+     */
+    private $pts;
 
 
     public function __construct()
@@ -162,5 +169,51 @@ class Defi
     public function getQuestion()
     {
         return $this->question;
+    }
+
+    /**
+     * Set isAnswered
+     *
+     * @param boolean $isAnswered
+     * @return Defi
+     */
+    public function setIsAnswered($isAnswered)
+    {
+        $this->isAnswered = $isAnswered;
+
+        return $this;
+    }
+
+    /**
+     * Get isAnswered
+     *
+     * @return boolean 
+     */
+    public function getIsAnswered()
+    {
+        return $this->isAnswered;
+    }
+
+    /**
+     * Set pts
+     *
+     * @param string $pts
+     * @return Defi
+     */
+    public function setPts($pts)
+    {
+        $this->pts = $pts;
+
+        return $this;
+    }
+
+    /**
+     * Get pts
+     *
+     * @return string 
+     */
+    public function getPts()
+    {
+        return $this->pts;
     }
 }

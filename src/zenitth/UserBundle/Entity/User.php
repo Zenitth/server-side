@@ -58,6 +58,11 @@ class User extends BaseUser
      */
     private $questionUser;
 
+    /**
+     * @ORM\OneToMany(targetEntity="zenitth\ApiBundle\Entity\Defi", mappedBy="userTo")
+     */
+    private $defi;
+
 
    public function __construct()
    {
@@ -238,5 +243,51 @@ class User extends BaseUser
     public function removeUserBrand(\zenitth\ApiBundle\Entity\brands $userBrand)
     {
         $this->userBrand->removeElement($userBrand);
+    }
+
+    /**
+     * Set defi
+     *
+     * @param string $defi
+     * @return User
+     */
+    public function setDefi($defi)
+    {
+        $this->defi = $defi;
+
+        return $this;
+    }
+
+    /**
+     * Get defi
+     *
+     * @return string 
+     */
+    public function getDefi()
+    {
+        return $this->defi;
+    }
+
+    /**
+     * Add defi
+     *
+     * @param \zenitth\ApiBundle\Entity\Defi $defi
+     * @return User
+     */
+    public function addDefi(\zenitth\ApiBundle\Entity\Defi $defi)
+    {
+        $this->defi[] = $defi;
+
+        return $this;
+    }
+
+    /**
+     * Remove defi
+     *
+     * @param \zenitth\ApiBundle\Entity\Defi $defi
+     */
+    public function removeDefi(\zenitth\ApiBundle\Entity\Defi $defi)
+    {
+        $this->defi->removeElement($defi);
     }
 }

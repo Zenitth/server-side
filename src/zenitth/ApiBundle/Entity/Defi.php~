@@ -28,26 +28,46 @@ class Defi
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="zenitth\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="zenitth\UserBundle\Entity\User")
      */
     private $userFrom;
 
     /**
-     * @ORM\OneToOne(targetEntity="zenitth\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="zenitth\UserBundle\Entity\User", inversedBy="defi")
      */
     private $userTo;
 
    /**
-     * @ORM\OneToOne(targetEntity="Questions")
+     * @ORM\ManyToOne(targetEntity="Questions")
      */
     private $question;
+
+     /**
+     * @ORM\Column(name="answer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Answers")
+     */
+    private $answer;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="answer", type="boolean")
+     * @ORM\Column(name="is_answer", type="boolean", nullable=true)
      */
-    private $answer;
+    private $isAnswered;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pts", type="string", nullable=true)
+     */
+    private $pts;
+
+
+    public function __construct()
+    {
+        $this->isAnswered = false;
+    }
+
 
     /**
      * Get id
