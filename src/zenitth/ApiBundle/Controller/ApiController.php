@@ -94,8 +94,7 @@ class ApiController extends Controller
 						'me' 			=> $user,
 						'score' 		=> $score,
 						'fan'			=> $fans,
-						'notifications' => $notifications,
-						'userRank'		=> $userRank
+						'notifications' => $notifications
 					);
 
 		return $response;

@@ -47,6 +47,7 @@ class AccountController extends Controller
         $user->setBirthdate($birthday);
         $user->setUserBrand($brand);
         $user->setSexe($sex);
+        $user->setScore(0);
 
 		$apiKey = sha1($user->getSalt() . $user->getId());
         $user->setApiKey($apiKey);
