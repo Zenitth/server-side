@@ -37,6 +37,14 @@ class brands
     private $nom;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="score", type="integer")
+     * @Expose
+     */
+    private $score;
+
+    /**
      * @ORM\OneToMany(targetEntity="Questions",mappedBy="brands")
      */
     private $brandQuestions;
@@ -177,5 +185,28 @@ class brands
     public function getEnemy()
     {
         return $this->enemy;
+    }
+
+    /**
+     * Set score
+     *
+     * @param integer $score
+     * @return brands
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return integer 
+     */
+    public function getScore()
+    {
+        return $this->score;
     }
 }

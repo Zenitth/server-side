@@ -11,6 +11,7 @@ use FOS\RestBundle\Request\ParamFetcher;
 use zenitth\ApiBundle\Entity\Defi;
 use zenitth\ApiBundle\Entity\Notification;
 use Zenitth\UserBundle\Entity\User;
+use Zenitth\ApiBundle\Entity\brands;
 
 class ApiController extends Controller
 {
@@ -21,7 +22,7 @@ class ApiController extends Controller
 	 */
 	public function getQuizzAction()
 	{
-		$tabQuestions = array('questions' => array(), 'user' => array());
+		$tabQuestions = [];
 		$user = $this->container->get('security.context')->getToken()->getUser();
 		$brand = $user->getUserBrand();
 		$questions = $brand->getBrandQuestions();
@@ -36,10 +37,8 @@ class ApiController extends Controller
 		}
 
 		foreach ($arrayId as $id => $question) {
-			array_push($tabQuestions['questions'],$questions[$id]);
+			array_push($tabQuestions,$questions[$id]);
 		}
-		array_push($tabQuestions['user'],$user);
-
 		return $tabQuestions;
 	}
 
@@ -49,7 +48,7 @@ class ApiController extends Controller
      *
      * @param ParamFetcher $paramFetcher Paramfetcher
      *
-     * @RequestParam(name="score", requirements="\d+", nullable=false, strict=true, description="Score")
+     * @RequestParam(name="score", requirements="\d+", nullable=false, strict=true, description="Username")
      *
      */
 	public function postScoreAction(ParamFetcher $paramFetcher)
@@ -78,8 +77,22 @@ class ApiController extends Controller
 		$fans = count($userBrand->getBrandUser());
 		$notifications = $db->getRepository('zenitthApiBundle:Notification')->getMine($user->getId());
 		$scoreUsers = $db->getRepository('ZenitthUserBundle:User')->findByScore($userBrand->getId());
+		$rankingBrands = $db->getRepository('zenitthApiBundle:brands')->findByBrandScore();
+
+		$currentBrandScore = $rankingBrands[$userBrand->getId()]->getScore();
+
+
 		$countScore=count($scoreUsers);
+		
 		$equality = false;
+		$brandScore = 0;
+
+		$scoreBybrands = 0;
+		$brandUserScore =0;
+		$userByBrand=array();
+
+		$countBrandScore=count($rankingBrands);
+		$brandEquality = false;
 
 		for ($i=0; $i < $countScore ; $i++) { 
 			if ($scoreUsers[$i]->getScore() === $score) {
@@ -88,13 +101,36 @@ class ApiController extends Controller
 					$userRank = $i+1;
 				}
 			}
+
+			$brandScore = $brandScore + $scoreUsers[$i]->getScore();
+
+			$em = $this->getDoctrine()->getManager();
+			$brand = $em->getRepository('zenitthApiBundle:brands')->find($userBrand);
+			$brand->setScore($brandScore);
+			$em->flush();
+
 		}
+
+
+		for ($i=0; $i < $countBrandScore ; $i++) { 
+
+			if($rankingBrands[$i]->getScore() === $brandScore){
+				if( $brandEquality!=  $brand->getScore() ){
+      				$brandEquality =$brand->getScore();
+					$brandRank = $i+1;
+				}
+			}
+		}
+
 
 		$response = array(
 						'me' 			=> $user,
 						'score' 		=> $score,
 						'fan'			=> $fans,
-						'notifications' => $notifications
+						'notifications' => $notifications,
+						'userRank'		=> $userRank,
+						'brandScore'	=> $brandScore,
+						'brandRank'		=> $brandRank
 					);
 
 		return $response;
@@ -184,73 +220,5 @@ class ApiController extends Controller
     	$em->flush();
 
 		return true;
-	}
-
-	/**
-	 * Get Defi ID
-	 *
-	 */
-	public function getDefiAction($id)
-	{
-		$user = $this->container->get('security.context')->getToken()->getUser();
-		$defi = $this->getDoctrine()->getRepository('zenitthApiBundle:Defi')->find($id);
-
-		return $defi;
-	}
-
-	/**
-     * Defi response
-     *
-     * @param ParamFetcher $paramFetcher Paramfetcher
-     *
-     * @RequestParam(name="pts", nullable=false, strict=true, description="Points")
-     * @RequestParam(name="defi", requirements="\d+", nullable=false, strict=true, description="Defi")
-     * @RequestParam(name="response", requirements="\d+", nullable=false, strict=true, description="Response")
-     *
-     */
-	public function postResponseDefiAction(ParamFetcher $paramFetcher)
-	{
-		$user = $this->container->get('security.context')->getToken()->getUser();
-		$pts = $paramFetcher->get('pts');
-		$defiId = $paramFetcher->get('defi');
-		$responseId = $paramFetcher->get('response');
-
-		$defiRepo = $this->getDoctrine()->getRepository('zenitthApiBundle:Defi');
-		$defi = $defiRepo->find($defiId);
-		$userFrom = $defi->getUserFrom();
-		$userTo = $defi->getUserTo();
-		
-		$em = $this->getDoctrine()->getEntityManager();
-
-		$defi->setPts($pts);
-		$defi->setIsAnswered(true);
-
-		if ($pts == 15) {
-			$scoreFrom = $userFrom->getScore() - 15;
-			$scoreTo = $userTo->getScore() + 15;
-			$userFrom->setScore($scoreFrom);
-			$userTo->setScore($scoreTo);
-		} else {
-			$scoreFrom = $userFrom->getScore() + 15;
-			$scoreTo = $userTo->getScore() - 15;
-			$userFrom->setScore($scoreFrom);
-			$userTo->setScore($scoreTo);
-		}
-		
-		$notification = new Notification();
-		$notification->setUserFrom($user);
-		$notification->setUserTo($defi->getUserFrom());
-		$text = ($pts == 15) ? "a remporté votre défi" : "a échoué à votre défi";
-		$notification->setDefi($defi);
-		$notification->setText($text);
-
-		$em->persist($defi);
-		$em->persist($notification);
-		$em->persist($userFrom);
-		$em->persist($userTo);
-    	$em->flush();
-
-    	return true;
-
 	}
 }

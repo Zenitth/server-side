@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class brandsRepository extends EntityRepository
 {
+	function findByBrandScore(){
+		$qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->add('select', 'b')
+           ->add('from', 'zenitthApiBundle:brands b')
+           ->orderBy('b.score', 'DESC')
+        ;
+
+        return $qb->getQuery()->getResult();
+	}
 }
