@@ -241,7 +241,7 @@ class ApiController extends Controller
 		$notification = new Notification();
 		$notification->setUserFrom($user);
 		$notification->setUserTo($defi->getUserFrom());
-		$text = ($pts == 15) ? "a gagné votre défi" : "a perdu votre défi";
+		$text = ($pts == 15) ? "a remporté votre défi" : "a échoué à votre défi";
 		$notification->setDefi($defi);
 		$notification->setText($text);
 
