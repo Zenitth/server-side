@@ -23,17 +23,19 @@ class ApiController extends Controller
 	public function getQuizzAction()
 	{
 		$tabQuestions = array('questions' => array(), 'user' => array());
-		$user = $this->container->get('security.context')->getToken()->getUser();
+		$user = $this->getDoctrine()->getRepository('ZenitthUserBundle:User')->find(10);
 		$brand = $user->getUserBrand();
 		$questions = $brand->getBrandQuestions();
 		
 		$arrayId= array();
-		for($i=0;$i<10;$i++){
+		while (count($arrayId) <= 10) {
 			$randQuestion=rand(0,count($questions));
 
 			if (!in_array($randQuestion, $arrayId )) {
 				array_push($arrayId, $randQuestion);
 			}
+
+			var_dump($arrayId);
 		}
 
 		foreach ($arrayId as $id => $question) {
@@ -223,7 +225,6 @@ class ApiController extends Controller
 
 		return true;
 	}
-}
 
 
 	/**
